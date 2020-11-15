@@ -115,15 +115,61 @@ Given below are two Ethernet frames.
 
 \section{Research tasks \hfill {20 points}}
 In this task you should do additional research extending the lecture. Please keep the citation rules in mind.
-\subsection{Collision}
-A computer tries to send data over an Ethernet network. However, after sending three packages the computer detects a collision.
-What happens next? 
 
-Describe in your own words how the Ethernet Collision Detection Algorithm handles a detected collision and highlight how the algorithm stops.
+\subsection{Solution:}
+Carrier-sense multiple access with collision detection (CSMA/CD) is the collision detection algorithm implemented in Ethernet.
+\begin{figure}[htbp]
+\centerline{\includegraphics[scale=.2]{./resources/CSMACD.png}}
+\caption{CSMA/CD}
+\label{fig}
+\end{figure}
+Procedure:
+\begin{itemize}
+\item The host assembles the frame to be transmitted with necessary header fields.
+\item Once the frame is available for transmission, the medium is checked if its idle, if yes the first package is transmitted.
+\item In the absence of any collision the host continues to transmit the frame to its completion.
+\item Let us assume a collision has been detected after the transmission of first 3 packages. Now the collision detection procedure is initialised.
+\item The moment collision is detected, a jam signal is transmitted instead of the frame to notify all the devices the occurance of the collision.
+\item The jam signal is transmitted for a minimum packet time so that it transmits through entire Ethernet length notifying all the devices about the collision. 
+\item The algorithm checks if the maximum attempt is reached if yes, the algorithm stops here telling the sender further transmission of data is not possible and the algorithm halts.
+\item If the maximum attempts is not reached,the wait counter is assigned with a random number, and it waits for one slot time (512 clock cycles - minimum frame size is 46+12 bytes) this is the minimum time required to occupy entire ethernet frame.
+\item All the devices will be notified about the collision at the same time so while we refrain from transmitting the other devices will also do the same. So the idea here is that random numbers of these devices will be different.
+\item As we wait for one slot time we decrement the wait counter, and increment the attempt counter and check if the medium is idle for transmission, if yes continue transmission. If not we wait for another slot time till wait counter equals 0 or maximum attempt is reached.
+\end{itemize}
 
-\subsection{IPv6}
-In a few sentences please research the differences between IPv4 and IPv6 and explain the advantages of IPv6.
 
+\subsection{IPv6 : Solution}
+Differences between IPv4 and IPv6 are as follows:
+\begin{table}[h]
+\centering
+\caption{IPv4 vs IPv6}
+\label{tab:IPv4 vs IPv6}
+\scalebox{0.8}{
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+\hline
+
+IPv4 & IPv6     \\ \hline
+32-bit IP address with numeric addressing method    & 128 bit IP address with alphanumneric addressing method             \\ \hline
+Address resolution Protocol is used to map MAC address    & Neighbour Dicovery protocol is used to map MAC address             \\ \hline
+ supports Broadcast Data transmission    & Supports multicast Data trasnmission .         \\ \hline
+DHCP or manual congiguration   & Supports Auto-configuration            \\ \hline
+Both host and the routers perform fragmentation  &  Only Sender performs fragmentation             \\ \hline
+checksum field is present  &  checksum field is absent             \\ \hline
+It generates 4 billion address &  It generates 340 undecillion addresses             \\ \hline
+\end{tabular}
+}
+\end{table}
+
+Advantages of IPv6:
+\begin{itemize}
+\item Autoconfiguration:\\ As soon as the device is powered up, IPv6 generates an IP address and places itself in the network. The moment it finds an IPv6 router it generates a local address and a globally routable address. In contrast, in IPv4 the devices has to be added manually where autoconfiguartion is not supported.
+\item Efficient packet processing:\\ In IPv4 the checksum is recalculated at every hop thus increasing packet processing time. IPv6 contains no checksum field so recalculation of cheksum is avoided .
+\item Directed Data Flows:\\ IPv6 supports multicast rather than broadcast. Multicast allows bandwidth-intensive packet flows to be sent to multiple destinations simultaneously, saving network bandwidth.
+\item Efficient routing: \\ In IPv6 the packet fragmentation is handled by the sender and the size of routing tables are comparatively smaller than IPv4 routing tables.
+\item Multicasting :\\ As IPv6 supports multicasting, therefore overall network bandwidth is reduced by  transmitting bandwidth intensive packets to  multiple destinations simultaneously.
+\item Security : \\ IPSec security is implemented which provides authentication and protects data integrity.
+
+\end{itemize}
 \section{Routing Table \hfill {20 points}}
 \subsection{Solution:}
 Based on the schematic representation from Figure \ref{fig:schematic_routing1} the routing table is as shown in table \ref{tab:routing_table1}
