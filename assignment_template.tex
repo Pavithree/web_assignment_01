@@ -22,6 +22,8 @@
 \usepackage{listings}
 \usepackage{framed}
 \usepackage{tikz}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
 %\usepackage[table]{xcolor}
 
 % The lecture title, e.g. "Web Information Retrieval".
@@ -123,9 +125,8 @@ Describe in your own words how the Ethernet Collision Detection Algorithm handle
 In a few sentences please research the differences between IPv4 and IPv6 and explain the advantages of IPv6.
 
 \section{Routing Table \hfill {20 points}}
-In the following schema rectangles represent the networks, with there name inside. The circles are the routers. An edge between a router and a network means, that a router is part of this network and has the MAC address written at the edge in blue, while the interface is written in black.
-
-In the routing table below you find an entry for every router. One entry in the routing table of a router contains a three tuple of Destination, Next Hop and Interface. 
+\subsection{Solution:}
+Based on the schematic representation from Figure \ref{fig:schematic_routing1} the routing table is as shown in table \ref{tab:routing_table1}
 \begin{figure}[h]
     \centering
     \begin{tikzpicture}
@@ -162,17 +163,35 @@ In the routing table below you find an entry for every router. One entry in the 
 \node (R3_mac1) at (6.5,1.5) {\textcolor{blue}{\footnotesize{21.14.2.1}}};
 \end{tikzpicture}
     \caption{Routing schematic representation}
-    \label{fig:schematic_routing}
+    \label{fig:schematic_routing1}
 \end{figure}
 
-\begin{enumerate}
-    \item Based on the schematic representation from Figure \ref{fig:schematic_routing} create a routing table.
-    \item Given the routing table from Table \ref{tab:routing_table} show the steps in path traversal if a packet is generated from the 67.0.0.0 network and heading for 26.0.0.0 network. 
-\end{enumerate}
+\begin{table}[h]
+\centering
+\caption{Routing Table for \ref{fig:schematic_routing1}}
+\label{tab:routing_table1}
+\scalebox{0.8}{
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+\hline
+\multicolumn{3}{|c|}{Router 1}        & \multicolumn{3}{c|}{Router 2}         & \multicolumn{3}{c|}{Router 3}        \\ \hline
+Destination & Next Hop    & Interface & Destination & Next Hop    & Interface & Destination & Next Hop   & Interface \\ \hline
+67.0.0.0    & 67.23.2.0   & eth0      & 147.71.0.0  & 147.71.21.3  & eth0      & 26.0.0.0  & 26.20.2.1 & eth0      \\ \hline
+147.71.0.0    & 147.71.2.1   & eth1      & 88.0.0.0  & 88.21.2.8 & eth1      & 21.0.0.0    & 21.14.2.1  & eth1      \\ \hline
+88.0.0.0  & 147.71.21.3 & eth1      & 26.0.0.0    & 26.30.3.1    & eth2      & 88.0.0.0    & 26.30.3.1 & eth0      \\ \hline
+26.0.0.0    & 147.71.21.3 & eth1      & 67.0.0.0    & 141.71.2.1 & eth0      & 147.71.0.0  & 26.30.3.1  & eth0      \\ \hline
+21.0.0.0 & 147.71.21.3   & eth1      & 21.0.0.0    & 26.20.2.1 & eth2      & 67.0.0.0    & 26.30.3.1  & eth0      \\ \hline
+\end{tabular}
+}
+\end{table}
+
+\subsection{Solution:}
+The Routing schematic representation for table \ref{tab:routing_table2} is shown in figure \ref{fig:schematic_routing2}.\\
+When a packet is generated at 67.0.0.0 for destination 26.0.0.0, the host will look up the routing table for the next hop which is at IP 67.68.3.1 through interface eth0 in order to reach router 1 (represented by R1). The router looks up the destination IP of the packet and confirm it's actual destination and lookup in the routing table for the next hop to reach that network which is 141.71.20.1 though interface eth2 and reaches 147.71.0.0. Upon receiving this packet the network will repeat the process of looking up in the routing table and redirect to router 2 (represented by R2) by taking the next hop at 141.71.26.3 through interface eth1. Since router 2 is directly connected to network 26.0.0.0 the last hop is taken at 26.3.2.1 through interface eth2.\\
+The Routing schematic representation to send a packet which is generated from 67.0.0.0 network and heading for 26.0.0.0 network is shown in figure \ref{fig:schematic_routing3}.\\
 \begin{table}[h]
 \centering
 \caption{Routing Table}
-\label{tab:routing_table}
+\label{tab:routing_table2}
 \scalebox{0.8}{
 \begin{tabular}{|l|l|l|l|l|l|l|l|l|}
 \hline
@@ -186,6 +205,79 @@ Destination & Next Hop    & Interface & Destination & Next Hop    & Interface & 
 \end{tabular}
 }
 \end{table}
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+\node[draw, rectangle](C1) at (0,0) {67.0.0.0};
+\node[draw, rectangle](C2) at (5,2) {147.71.0.0};
+\node[draw, rectangle](C3) at (0,4) {88.0.0.0};
+\node[draw, rectangle](C4) at (10,0) {26.0.0.0};
+\node[draw, rectangle](C5) at (10,4) {205.30.7.0};
+
+\node[draw, circle](R1) at (0,2) {R1};
+\node[draw, circle](R2) at (10,2) {R2};
+\node[draw, circle](R3) at (5,4) {R3};
+
+\draw[-](C1) to (R1);
+\node (R1_eth0) at (-0.6,1.4) {\texttt{\footnotesize{ETH0}}};
+\node (R1_mac0) at (0.8,1.4) {\textcolor{blue}{\footnotesize{67.68.3.1}}};
+\draw[-](R1) to (C3);
+\node (R1_eth1) at (-0.6,2.6) {\texttt{\footnotesize{ETH1}}};
+\node (R1_ma1) at (0.8,2.6) {\textcolor{blue}{\footnotesize{88.4.32.6}}};
+\draw[-](R1) to (C2);
+\node (R1_eth2) at (2.6,2.2) {\texttt{\footnotesize{ETH2}}};
+\node (R1_ma2) at (2.6,1.7) {\textcolor{blue}{\footnotesize{141.71.20.1}}};
+
+\draw[-](C5) to (R2);
+\node (R2_eth0) at (10.6,2.6) {\texttt{\footnotesize{ETH0}}};
+\node (R2_mac0) at (9.2,2.6) {\textcolor{blue}{\footnotesize{205.30.7.1}}};
+\draw[-](R2) to (C2);
+\node (R2_eth1) at (7.6,2.2) {\texttt{\footnotesize{ETH1}}};
+\node (R2_mac1) at (7.6,1.7) {\textcolor{blue}{\footnotesize{141.71.26.3}}};
+\draw[-](R2) to (C4);
+\node (R2_eth2) at (10.6,1.4) {\texttt{\footnotesize{ETH2}}};
+\node (R2_ma2) at (9.2,1.4) {\textcolor{blue}{\footnotesize{26.3.2.1}}};
+
+\draw[-](R3) to (C5);
+\node (R3_eth0) at (7.6,4.2) {\texttt{\footnotesize{ETH0}}};
+\node (R3_ma0) at (7.6,3.7) {\textcolor{blue}{\footnotesize{205.30.7.2}}};
+\draw[-](C3) to (R3);
+\node (R3_eth1) at (2.6,4.2) {\texttt{\footnotesize{ETH1}}};
+\node (R3_mac1) at (2.6,3.7) {\textcolor{blue}{\footnotesize{88.6.32.1}}};
+\end{tikzpicture}
+    \caption{Routing schematic representation}
+    \label{fig:schematic_routing2}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}
+\node[draw, rectangle](C1) at (0,0) {67.0.0.0};
+\node[draw, rectangle](C2) at (5,2) {147.71.0.0};
+\node[draw, rectangle](C4) at (10,0) {26.0.0.0};
+
+\node[draw, circle](R1) at (0,2) {R1};
+\node[draw, circle](R2) at (10,2) {R2};
+
+\draw[-](C1) to (R1);
+\node (R1_eth0) at (-0.6,1.4) {\texttt{\footnotesize{ETH0}}};
+\node (R1_mac0) at (0.8,1.4) {\textcolor{blue}{\footnotesize{67.68.3.1}}};
+
+\draw[-](R1) to (C2);
+\node (R1_eth2) at (2.6,2.2) {\texttt{\footnotesize{ETH2}}};
+\node (R1_ma2) at (2.6,1.7) {\textcolor{blue}{\footnotesize{141.71.20.1}}};
+
+\draw[-](R2) to (C2);
+\node (R2_eth1) at (7.6,2.2) {\texttt{\footnotesize{ETH1}}};
+\node (R2_mac1) at (7.6,1.7) {\textcolor{blue}{\footnotesize{141.71.26.3}}};
+\draw[-](R2) to (C4);
+\node (R2_eth2) at (10.6,1.4) {\texttt{\footnotesize{ETH2}}};
+\node (R2_ma2) at (9.2,1.4) {\textcolor{blue}{\footnotesize{26.3.2.1}}};
+
+\end{tikzpicture}
+    \caption{Routing schematic representation of path if a packet is generated from 67.0.0.0 network and heading for 26.0.0.0 network.}
+    \label{fig:schematic_routing3}
+\end{figure}
 
 
 \input{resources/footer}
