@@ -186,7 +186,13 @@ Destination & Next Hop    & Interface & Destination & Next Hop    & Interface & 
 
 \subsection{Solution:}
 The Routing schematic representation for table \ref{tab:routing_table2} is shown in figure \ref{fig:schematic_routing2}.\\
-When a packet is generated at 67.0.0.0 for destination 26.0.0.0, the host will look up the routing table for the next hop which is at IP 67.68.3.1 through interface eth0 in order to reach router 1 (represented by R1). The router looks up the destination IP of the packet and confirm it's actual destination and lookup in the routing table for the next hop to reach that network which is 141.71.20.1 though interface eth2 and reaches 147.71.0.0. Upon receiving this packet the network will repeat the process of looking up in the routing table and redirect to router 2 (represented by R2) by taking the next hop at 141.71.26.3 through interface eth1. Since router 2 is directly connected to network 26.0.0.0 the last hop is taken at 26.3.2.1 through interface eth2.\\
+\begin{enumerate}
+	\item When a packet is generated at \textbf{67.0.0.0} for destination \textbf{26.0.0.0}, the host will look up the routing table for the next hop which is at IP \textbf{67.68.3.1} through interface \textbf{eth0} in order to reach router 1 (represented by R1). 
+	\item The router looks up the destination IP of the packet and confirm it's actual destination and lookup in the routing table for the next hop to reach that network which is \textbf{141.71.20.1} though interface \textbf{eth2} and reaches \textbf{147.71.0.0}. 
+	\item Upon receiving this packet the network will repeat the process of looking up in the routing table and redirect to router 2 (represented by R2) by taking the next hop at \textbf{141.71.26.3} through interface \textbf{eth1}. 
+	\item Since router 2 is directly connected to network \textbf{26.0.0.0} the last hop is taken at \textbf{26.3.2.1} through interface  \textbf{eth2}.
+\end{enumerate}
+
 The Routing schematic representation to send a packet which is generated from 67.0.0.0 network and heading for 26.0.0.0 network is shown in figure \ref{fig:schematic_routing3}.\\
 \begin{table}[h]
 \centering
