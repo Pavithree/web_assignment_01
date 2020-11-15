@@ -186,6 +186,7 @@ Destination & Next Hop    & Interface & Destination & Next Hop    & Interface & 
 
 \subsection{Solution:}
 The Routing schematic representation for table \ref{tab:routing_table2} is shown in figure \ref{fig:schematic_routing2}.\\
+The steps in path traversal if a packet which is generated from 67.0.0.0 network and heading for 26.0.0.0 network are:
 \begin{enumerate}
 	\item When a packet is generated at \textbf{67.0.0.0} for destination \textbf{26.0.0.0}, the host will look up the routing table for the next hop which is at IP \textbf{67.68.3.1} through interface \textbf{eth0} in order to reach router 1 (represented by R1). 
 	\item The router looks up the destination IP of the packet and confirm it's actual destination and lookup in the routing table for the next hop to reach that network which is \textbf{141.71.20.1} though interface \textbf{eth2} and reaches \textbf{147.71.0.0}. 
